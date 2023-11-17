@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,29 +32,24 @@ class TimeTest {
     }
 
     @Test
+    @DisplayName("Calculating the difference between to times should work")
     void differenceTo() {
-        Time t1 = new Time(12, 12, 12);
-        Time t2 = new Time(1, 1, 1);
-        Time e1 = new Time(12, 48, 49);
-        boolean b1 = e1.isEqualTo(t1.differenceTo(t2));
-        assertTrue(b1);
+        boolean b1 = differenceToHelper(12, 48, 49, 12, 12, 12, 1, 1, 1);
+        boolean b2 = differenceToHelper(9, 28, 33, 3, 45, 42, 13, 14, 15);
+        boolean b3 = differenceToHelper(14, 2, 12, 25, 12, 3, 14, 14, 15);
+        boolean b4 = differenceToHelper(5, 28, 51, 23, 55, 4, 5, 23, 55);
+        assertAll(
+                () -> assertTrue(b1),
+                () -> assertTrue(b2),
+                () -> assertTrue(b3),
+                () -> assertTrue(b4)
+        );
+    }
 
-        Time t3 = new Time(3, 45, 42);
-        Time t4 = new Time(13, 14, 15);
-        Time e2 = new Time(9, 28, 33);
-        boolean b2 = e2.isEqualTo(t3.differenceTo(t4));
-        assertTrue(b2);
-
-        Time t5 = new Time(25, 12, 3);
-        Time t6 = new Time(14, 14, 15);
-        Time e3 = new Time(14, 2, 12);
-        boolean b3 = e3.isEqualTo(t5.differenceTo(t6));
-        assertTrue(b3);
-
-        Time t7 = new Time(23, 55, 4);
-        Time t8 = new Time(5, 23, 55);
-        Time e4 = new Time(5, 28, 51);
-        boolean b4 = e4.isEqualTo(t7.differenceTo(t8));
-        assertTrue(b4);
+    private boolean differenceToHelper(int differenceHour, int differenceMinute, int differenceSecond, int fromHour, int fromMinute, int fromSecond, int toHour, int toMinute, int toSecond) {
+        Time difference = new Time(differenceHour, differenceMinute, differenceSecond);
+        Time from = new Time(fromHour, fromMinute, fromSecond);
+        Time to = new Time(toHour, toMinute, toSecond);
+        return difference.isEqualTo(from.differenceTo(to));
     }
 }
