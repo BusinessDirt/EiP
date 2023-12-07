@@ -1,6 +1,10 @@
-public class Triangle {
+public class Triangle extends Shape {
 
     private Point a, b, c;
+
+    public Triangle() {
+        this(new Point(0, 0), new Point(0, 0), new Point(0, 0));
+    }
 
     public Triangle(Point a, Point b, Point c) {
         this.a = a;
@@ -76,5 +80,12 @@ public class Triangle {
 
     public void setC(Point c) {
         this.c = c;
+    }
+
+    @Override
+    public void printShape() {
+        System.out.println("   *\n" +
+                "  ***\n" +
+                " *****");
     }
 }

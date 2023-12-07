@@ -1,6 +1,10 @@
-public class Square {
+public class Square extends Shape {
     private double length;
     private String lineColor, fillColor;
+
+    public Square() {
+        this(1, "black", "white");
+    }
 
     public Square(double length, String lineColor, String fillColor) {
         this.length = length;
@@ -34,5 +38,12 @@ public class Square {
 
     public void setFillColor(String fillColor) {
         this.fillColor = fillColor;
+    }
+
+    @Override
+    public void printShape() {
+        System.out.println("***\n" +
+                "***\n" +
+                "***");
     }
 }
