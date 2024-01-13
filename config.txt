@@ -1,0 +1,9 @@
+Einfuehrung in die Programmierung
+2024
+3
+Wie lautet ein Datentyp fuer ganze Zahlen?
+1
+Erklaeren Sie das Konzept der Kapselung in drei Saetzen!
+3
+Test Question?
+7

@@ -1,11 +1,12 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class Exam {
 
-    private final String name;
-    private final int year;
+    private String name;
+    private int year;
     private final List<Question> questions;
 
     public Exam(String name, int year) {
@@ -54,5 +55,50 @@ public class Exam {
             sb.append(q).append("\n");
         }
         return sb.toString();
+    }
+
+    public boolean load() {
+        try {
+            FileReader reader = new FileReader("./config.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            this.name = readFromBuffer(bufferedReader);
+            this.year = Integer.parseInt(readFromBuffer(bufferedReader));
+            this.questions.clear();
+            int questions = Integer.parseInt(readFromBuffer(bufferedReader));
+            for (int i = 0; i < questions; i++) {
+                this.addQuestion(readFromBuffer(bufferedReader), Integer.parseInt(readFromBuffer(bufferedReader)));
+            }
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private String readFromBuffer(BufferedReader buffer) {
+        try {
+            if (buffer.ready()) return buffer.readLine();
+            throw new IOException("BufferedReader is empty");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void save() {
+        try (FileWriter writer = new FileWriter("./config.txt")) {
+            writer.write(this.name + "\n");
+            writer.write(this.year + "\n");
+            writer.write(this.getNumberOfQuestions() + "\n");
+
+            for(Question q : this.getQuestions()) {
+                writer.write(q.text() + "\n");
+                writer.write(q.points() + "\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
