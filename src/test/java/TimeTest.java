@@ -1,7 +1,13 @@
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.*;
 
 class TimeTest {
 
@@ -31,25 +37,18 @@ class TimeTest {
         assertTrue(t3.isEqualTo(t1));
     }
 
-    @Test
-    @DisplayName("Calculating the difference between to times should work")
-    void differenceTo() {
-        boolean b1 = differenceToHelper(12, 48, 49, 12, 12, 12, 1, 1, 1);
-        boolean b2 = differenceToHelper(9, 28, 33, 3, 45, 42, 13, 14, 15);
-        boolean b3 = differenceToHelper(14, 2, 12, 25, 12, 3, 14, 14, 15);
-        boolean b4 = differenceToHelper(5, 28, 51, 23, 55, 4, 5, 23, 55);
-        assertAll(
-                () -> assertTrue(b1),
-                () -> assertTrue(b2),
-                () -> assertTrue(b3),
-                () -> assertTrue(b4)
-        );
-    }
-
-    private boolean differenceToHelper(int differenceHour, int differenceMinute, int differenceSecond, int fromHour, int fromMinute, int fromSecond, int toHour, int toMinute, int toSecond) {
-        Time difference = new Time(differenceHour, differenceMinute, differenceSecond);
-        Time from = new Time(fromHour, fromMinute, fromSecond);
-        Time to = new Time(toHour, toMinute, toSecond);
-        return difference.isEqualTo(from.differenceTo(to));
+    @TestFactory
+    @DisplayName("Calculating the difference between two times")
+    Stream<DynamicTest> differenceTo() {
+        int[][] data = new int[][] { { 12, 12, 12, 1, 1, 1, 12, 48, 49 }, { 3, 45, 42, 13, 14, 15, 9, 28, 33 }, { 25, 12, 3, 14, 14, 15, 14, 2, 12 }, { 23,  55, 4, 5, 23, 55, 5, 28, 51 } };
+        return Arrays.stream(data).map(entry -> {
+            Time from = new Time(entry[0], entry[1], entry[2]);
+            Time to = new Time(entry[3], entry[4], entry[5]);
+            Time difference = new Time(entry[6], entry[7], entry[8]);
+            System.out.println(from + " " + to + " " + difference + "\n" + from.differenceTo(to));
+            return dynamicTest(String.format("From %s to %s should be %s", from, to, difference),
+                    () -> assertTrue(difference.isEqualTo(from.differenceTo(to)))
+            );
+        });
     }
 }

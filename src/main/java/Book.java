@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class Book {
     private final String title;
     private final String isbn;
-    private static final Pattern validISBNPattern = Pattern.compile("(^\\d{9}(X|x|\\d)$)|(^(978)?\\d{10}$)");
+    private static final Pattern validISBNPattern = Pattern.compile("(^\\d{9}(X|x|\\d)$)|(^978\\d{10}$)");
 
     public Book(String title, String isbn) throws IllegalAccessException, IllegalISBNException {
         if (title == null || isbn == null) throw new IllegalAccessException();
